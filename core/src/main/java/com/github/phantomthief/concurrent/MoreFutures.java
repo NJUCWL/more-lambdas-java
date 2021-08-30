@@ -49,6 +49,39 @@ import com.google.common.util.concurrent.UncheckedTimeoutException;
  */
 public class MoreFutures {
 
+    /**
+     * ①非检查异常 和 ②检查异常
+     * <p>
+     * 除了RuntimeException（运行时异常）与其子类，以及错误（Error），其他的都是检查异常（绝对的大家族）
+     * 非检查异常： RuntimeException与其子类，以及错误(Error)
+     * 常见的检查异常：（就在在编译时期必须让你处理 <抛出或者捕获处理> 的那些异常）
+     * 1、ClassNotFoundException // 找不到具有指定名称的类的定义
+     * 2、DataFormatException  //数据格式异常
+     * 3、IOException  //输入输出异常
+     * 4、SQLException  //提供有关数据库访问错误或其他错误的信息的异常
+     * 5、 FileNotFoundException   //当试图打开指定路径名表示的文件失败时，抛出此异常
+     * 6、.EOFException  //当输入过程中意外到达文件或流的末尾时，抛出此异常
+     * <b>此类异常在JVM上都不会编译通过，即在javac是就不会通过，如果不对其进行处理，程序就不会编译通过</b>
+     * <p>
+     * Exception异常进行划分，它可分为运行时异常和非运行时异常。
+     * <运行时异常>:
+     * 都是RuntimeException类及其子类异常，如NullPointerException(空指针异常)、IndexOutOfBoundsException(下标越界异常)
+     * 等，这些异常是非检查异常，程序中可以选择捕获处理，也可以不处理。这些异常一般是由程序逻辑错误引起的，程序应该从逻辑角度尽可能避免这类异常的发生。
+     * 运行时异常的特点是Java编译器不会检查它，也就是说，当程序中可能出现这类异常，即使没有用try-catch语句捕获它，也没有用throws子句声明抛出它，也会编译通过
+     * 常见的运行时异常：
+     * 1.StringIndexOutOfBoundsException //指示某排序索引（例如对数组、字符串或向量的排序）超出范围时抛出
+     * 2.ArrayIndexOutOfBoundsException //用非法索引访问数组时抛出的异常。如果索引为负或大于等于数组大小，则该索引为非法索引
+     * 3. ArithmeticException //当出现异常的运算条件时，抛出此异常。（ 例如，一个整数“除以零”时，抛出此类的一个实例）
+     * 4. IllegaArguementException //抛出的异常表明向方法传递了一个不合法或不正确的参数
+     * 5. NullPointerException //空指针异常（调用 null 对象的实例方法等）
+     * 6. ClassCastException //类转换异常
+     * 7. ArrayStoreException  //数据存储异常，操作数组时类型不一致
+     * <p>
+     * 非运行时异常：
+     * 是RuntimeException以外的异常，类型上都属于Exception类及其子类。从程序语法角度讲是必须进行处理的异常，如果不处理，程序就不能编译通过。如IOException、SQLException
+     * 等以及用户自定义的Exception异常，一般情况下不要自定义检查异常。
+     */
+
     private static final Logger logger = LoggerFactory.getLogger(MoreFutures.class);
 
     /**
@@ -68,7 +101,7 @@ public class MoreFutures {
     }
 
     /**
-     * 获取并返回一个{@link Future}的操作结果值，并将可能出现的异常以非检查异常的方式抛出
+     * 取出 {@link Future}接口的value值，并将可能出现的异常以非检查异常的方式抛出
      *
      * @param future 要获取值的{@link Future}
      * @param timeout 超时时间
@@ -117,8 +150,8 @@ public class MoreFutures {
     }
 
     /**
-     * 同时获取并返回一批{@link Future}的操作结果值
-     *
+     * <b>针对List<Future>类型，批量获取Future的value值</b>
+     * <P>同时获取并返回一批{@link Future}的操作结果值</P>
      * @param futures 要获取值的多个{@link Future}
      * @param duration 获取值的超时时间
      * @throws TryWaitFutureUncheckedException 当并非所有的{@link Future}都成功返回时，将会抛出此异常，
@@ -134,6 +167,7 @@ public class MoreFutures {
     }
 
     /**
+     * <b>针对List<Future>类型，批量获取Future的value值</b>
      * 同时获取并返回一批{@link Future}的操作结果值
      * <p>典型的使用场景：</p>
      * <pre>{@code
@@ -168,6 +202,7 @@ public class MoreFutures {
     }
 
     /**
+     * <b>针对List<Future>类型，批量获取Future的value值</b>
      * 同时获取并返回一批{@link Future}的操作结果值
      *
      * @param keys 要获取值的Key，作为输入值，通过asyncFunc参数传入的函数转换为Future对象
@@ -187,6 +222,7 @@ public class MoreFutures {
     }
 
     /**
+     * <b>针对List<Future>类型，批量获取Future的value值</b>
      * 同时获取并返回一批{@link Future}的操作结果值
      * <p>典型的使用场景：</p>
      * <pre>{@code
@@ -373,7 +409,7 @@ public class MoreFutures {
         @SuppressWarnings("Guava")
         com.google.common.base.Function<? super I, ? extends O> realFunc;
         if (function instanceof com.google.common.base.Function) {
-            //noinspection unchecked
+            //no-inspection unchecked
             realFunc = (com.google.common.base.Function) function;
         } else {
             realFunc = function::apply;
