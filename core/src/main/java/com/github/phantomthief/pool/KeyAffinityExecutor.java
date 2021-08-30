@@ -20,9 +20,9 @@ import com.google.common.util.concurrent.ThreadFactoryBuilder;
 
 /**
  * 按指定的Key亲和顺序消费的执行器
- * <p>KeyAffinityExecutor是一个特殊的任务执行器{@link java.util.concurrent.Executor}，
- * 它可以确保投递进来的任务按Key相同的任务依照提交顺序依次执行。在既要通过并行处理来提高吞吐量、又要保证一定范围内的
- * 任务按照严格的先后顺序来运行的场景下非常适用。</p>
+ * <h1 color=red>KeyAffinityExecutor是一个特殊的任务执行器{@link java.util.concurrent.Executor}，
+ * 它可以确保投递进来的任务按Key相同的任务依照提交顺序依次执行。在既要通过并行处理来提高<em>吞吐量、</em>又要保证一定范围内的
+ * 任务按照严格的先后顺序来运行的场景下非常适用。</h1>
  * <p>KeyAffinityExecutor的内建实现方式，是将指定的Key映射到固定的单线程执行器上，它内部会维护
  * 多个（数量可配）这样的单线程执行器，来保持一定的任务并行度。</p>
  * <p>需要注意的是，此接口定义的KeyAffinityExecutor，并不要求Key相同的任务在相同的线程上运行，
